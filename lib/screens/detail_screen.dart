@@ -40,22 +40,29 @@ class _DetailScreenState extends State<DetailScreen> {
       _inCart = true;
     });
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: const Text('Game ditambahkan ke keranjang.'),
-        duration: const Duration(seconds: 2),
-        action: SnackBarAction(
-          label: 'Lihat',
-          onPressed: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (_) => CartScreen(username: widget.username),
-              ),
-            );
-          },
-        ),
-      ),
-    );
+  }
+
+  Future<void> _toggleFavorite() async {
+    if (_inCart) {
+      final items = CartService.instance.getUserCart(widget.username);
+      final entry = items.cast<dynamic>().firstWhere(
+            (e) => e.productId == widget.product.id,
+            orElse: () => null,
+          );
+
+      if (entry != null) {
+        await CartService.instance.removeItem(entry.hiveKey);
+      }
+    } else {
+      await _addToCart();
+      return;
+    }
+
+    if (!mounted) return;
+
+    setState(() {
+      _inCart = false;
+    });
   }
 
   @override
@@ -82,12 +89,13 @@ class _DetailScreenState extends State<DetailScreen> {
             const SizedBox(height: 16),
             Text(
               product.title,
-              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+              style: const TextStyle(
                     fontWeight: FontWeight.bold,
+                    fontSize: 24,
                   ),
             ),
             
-            const SizedBox(height: 8),
+            const SizedBox(height: 4),
            
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -100,7 +108,7 @@ class _DetailScreenState extends State<DetailScreen> {
                         children: [
                           Icon(
                             Icons.star,
-                            size: 16,
+                            size: 18,
                             color: Colors.orange.shade700,
                           ),
                           const SizedBox(width: 6),
@@ -113,7 +121,7 @@ class _DetailScreenState extends State<DetailScreen> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 4),
                       Row(
                         children: [
                           Text(
@@ -121,6 +129,7 @@ class _DetailScreenState extends State<DetailScreen> {
                               style: TextStyle(
                                 fontWeight: FontWeight.w400,
                                 color: Colors.grey.shade800,
+                                fontSize: 14,
                               ),
                             ),
                           
@@ -130,17 +139,66 @@ class _DetailScreenState extends State<DetailScreen> {
                             style: TextStyle(
                               fontWeight: FontWeight.w400,
                               color: Colors.grey.shade800,
+                              fontSize: 14,
                             ),
                           ),
                         ],
                       ),
-                      const SizedBox(height: 12),
-                      SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: _inCart ? null : _addToCart,
-                          child: _inCart ? const Text('Added to Favorites') : const Text('Add to Favorites'),
-                        ),
+                      const SizedBox(height: 16),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: SizedBox(
+                              height: 54,
+                              child: ElevatedButton(
+                                onPressed: () {},
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.orange.shade700,
+                                  foregroundColor: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(14),
+                                  ),
+                                  elevation: 0,
+                                ),
+                                child: const Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(Icons.play_arrow, size: 20),
+                                    SizedBox(width: 4),
+                                    Text(
+                                      'nonton',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          InkWell(
+                            onTap: _toggleFavorite,
+                            borderRadius: BorderRadius.circular(14),
+                            child: Container(
+                              width: 54,
+                              height: 54,
+                              decoration: BoxDecoration(
+                                color: _inCart ? Colors.red.shade50 : Colors.transparent,
+                                borderRadius: BorderRadius.circular(14),
+                                border: Border.all(
+                                  color: _inCart ? Colors.red : Colors.grey.shade400,
+                                  width: 1.4,
+                                ),
+                              ),
+                              child: Icon(
+                                _inCart ? Icons.favorite : Icons.favorite_border,
+                                color: _inCart ? Colors.red : Colors.grey.shade700,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                       const SizedBox(height: 16),
                       Text(
