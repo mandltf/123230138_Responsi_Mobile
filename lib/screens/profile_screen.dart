@@ -40,23 +40,35 @@ class ProfileScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 12),
-                Text(
-                  username,
-                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.center,
+                const SizedBox(height: 8),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: const [
+                            Text('Username', style: TextStyle(fontWeight: FontWeight.w600)),
+                            SizedBox(height: 12),
+                            Text('Total anime favorite', style: TextStyle(fontWeight: FontWeight.w600)),
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(username, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                            const SizedBox(height: 12),
+                            Text('$totalGames', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 const SizedBox(height: 12),
-                Text(
-                  'Total game di keranjang: $totalGames',
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(fontWeight: FontWeight.w600),
-                ),
-                const SizedBox(height: 12),
-                const Text(
-                  'Maaf ya mas-mas aslab udah mau direpotin waktu kuis, kurepotin karena saya izin mulu.',
-                  textAlign: TextAlign.center,
-                ),
-                const Spacer(),
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton.icon(
