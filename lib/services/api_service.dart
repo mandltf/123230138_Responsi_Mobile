@@ -29,11 +29,15 @@ class ApiService {
       throw Exception('Failed to load product. Status: ${response.statusCode}');
     }
 
-    final data = jsonDecode(response.body) as Map<String, dynamic>;
-    final list = data['data'] as List<dynamic>? ?? [];
+    final data = json.decode(response.body) as Map<String, dynamic>;
+    final item = data['data'];
 
-    if (list.isNotEmpty && list.first is Map<String, dynamic>) {
-      return Product.fromJson(list.first as Map<String, dynamic>);
+    if (item is Map<String, dynamic>) {
+      return Product.fromJson(item);
+    }
+
+    if (item is List && item.isNotEmpty && item.first is Map<String, dynamic>) {
+      return Product.fromJson(item.first as Map<String, dynamic>);
     }
 
     throw Exception('Unexpected product response format.');

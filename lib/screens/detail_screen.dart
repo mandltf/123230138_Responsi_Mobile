@@ -100,27 +100,57 @@ class _DetailScreenState extends State<DetailScreen> {
                         children: [
                           Icon(
                             Icons.star,
-                            size: 18,
+                            size: 16,
                             color: Colors.orange.shade700,
                           ),
                           const SizedBox(width: 6),
                           Text(
                             '${product.rating}',
                             style: const TextStyle(
-                              fontWeight: FontWeight.w600,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Row(
+                        children: [
+                          Text(
+                              product.ageRating,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w400,
+                                color: Colors.grey.shade800,
+                              ),
+                            ),
+                          
+                          const SizedBox(width: 8),
+                          Text(
+                            '| ${product.jmlhEpisode} episode',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              color: Colors.grey.shade800,
                             ),
                           ),
                         ],
                       ),
                       const SizedBox(height: 12),
-                      Text(
-                        '${product.jmlhEpisode} episode',
-                        style: TextStyle(
-                          height: 1.5,
-                          color: Colors.grey.shade800,
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: _inCart ? null : _addToCart,
+                          child: _inCart ? const Text('Added to Favorites') : const Text('Add to Favorites'),
                         ),
                       ),
-                      const SizedBox(height: 12),
+                      const SizedBox(height: 16),
+                      Text(
+                        'Overview',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w800,
+                          fontSize: 18,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
                       Text(
                         product.synopsis,
                         style: TextStyle(
@@ -132,15 +162,6 @@ class _DetailScreenState extends State<DetailScreen> {
                   ),
                 ),
               ],
-            ),
-            const SizedBox(height: 22),
-            const SizedBox(height: 12),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: _inCart ? null : _addToCart,
-                child: _inCart ? const Text('Added to Favorites') : const Text('Add to Favorites'),
-              ),
             ),
           ],
         ),
