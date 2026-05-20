@@ -74,8 +74,16 @@ class _CartItemTile extends StatelessWidget {
               fit: BoxFit.cover,
             ),
       title: Text(item.title),
-      subtitle: Text(
-        'Rating: ${item.rating}',
+      subtitle: Row(
+        children: [
+          Icon(
+            Icons.star,
+            size: 16,
+            color: Colors.orange.shade700,
+          ),
+          const SizedBox(width: 6),
+          Text(item.rating.toString()),
+        ],
       ),
       trailing: IconButton(
         onPressed: () async {
