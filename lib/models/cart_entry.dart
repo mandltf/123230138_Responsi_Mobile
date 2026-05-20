@@ -19,10 +19,12 @@ class CartEntry {
     return CartEntry(
       hiveKey: hiveKey,
       username: map['username'] as String? ?? '',
-      productId: map['productId'] as int? ?? 0,
-      title: map['titles'] as String? ?? '-',
+      productId: int.tryParse(map['productId']?.toString() ?? '') ?? 0,
+      title: map['title'] as String? ?? map['titles'] as String? ?? '-',
       posterImage: map['posterImage'] as String? ?? '-',
-      rating: (map['rating'] as num?)?.toDouble() ?? 0,
+      rating: (map['rating'] is num)
+          ? (map['rating'] as num).toDouble()
+          : double.tryParse(map['rating']?.toString() ?? '') ?? 0.0,
     );
   }
 }
